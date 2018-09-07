@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_07_023655) do
+ActiveRecord::Schema.define(version: 2018_09_07_025258) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contributions", force: :cascade do |t|
+    t.text "body"
+    t.bigint "user_id"
+    t.bigint "idea_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_contributions_on_idea_id"
+    t.index ["user_id"], name: "index_contributions_on_user_id"
+  end
 
   create_table "ideas", force: :cascade do |t|
     t.string "title"
@@ -33,5 +43,7 @@ ActiveRecord::Schema.define(version: 2018_09_07_023655) do
     t.string "profile_pic_url"
   end
 
+  add_foreign_key "contributions", "ideas"
+  add_foreign_key "contributions", "users"
   add_foreign_key "ideas", "users"
 end

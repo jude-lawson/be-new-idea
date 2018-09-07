@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Idea do
+RSpec.describe Contribution do
   describe 'Validations' do
     it { should validate_presence_of(:body) }
   end

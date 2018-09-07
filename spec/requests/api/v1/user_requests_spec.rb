@@ -19,7 +19,8 @@ RSpec.describe 'User Requests' do
       expected_response = { error: 'User creation unsuccessful.'}
 
       expect(response.status).to eq(400)
-      expect(response_data).to eq(expected_response)
+      expect(response_data['message']).to eq('An error has occurred. User creation was unsuccessful.')
+      expect(response_data['error']).to include('Validation failed: Uid can\'t be blank')
     end
   end
 end

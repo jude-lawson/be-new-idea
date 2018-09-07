@@ -1,3 +1,15 @@
+#  IDEA -- Some idea title
+  #  Idea body....
+  #  ↳ Contribution 1 - contribution body
+  #     ↳ Comment 1 - comment body for contribution 1 
+  #     ↳ Comment 2 - comment body for contribution 1
+  #     ↳ Comment 3 - comment body for contribution 1
+
+  #  ↳ Contribution 2 - contribution body
+  #     ↳ Comment 1 - comment body for contribution 2 
+  #     ↳ Comment 2 - comment body for contribution 2
+  #     ↳ Comment 3 - comment body for contribution 2
+
 require 'rails_helper'
 
 RSpec.describe Contribution do

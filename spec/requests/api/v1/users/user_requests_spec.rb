@@ -28,7 +28,18 @@ RSpec.describe 'User Requests' do
     it 'should return all of the user\'s data as well as their ideas, comments, and contributions' do
       get "/api/v1/users/#{@user1.id}"
 
+      expect(response.status).to eq(200)
       expect(response.body).to eq(@user1_raw)
+    end
+
+    it 'should return a 404 if the user cannot be found' do
+      get '/api/v1/users/999'
+
+      expected_error = "ActiveRecord::RecordNotFound: Couldn't find User with 'id'=999"
+
+      expect(response.status).to eq(404)
+      expect(JSON.parse(response.body)['message']).to eq('An error has occurred.')
+      expect(JSON.parse(response.body)['error']).to include(expected_error)
     end
   end
 end

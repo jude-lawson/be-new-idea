@@ -7,4 +7,10 @@ RSpec.describe User do
     it { should validate_presence_of(:username) }
     it { should have_db_column(:profile_pic_url) }
   end
+
+  describe 'Relationships' do
+    it { should have_many(:ideas) }
+    it { should have_many(:contributions) }
+    it { should have_many(:comments) }
+  end
 end

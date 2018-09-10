@@ -12,4 +12,17 @@ class Api::V1::UsersController < ApplicationController
       render status: 400, json: feedback
     end
   end
+
+  def show
+    begin
+      user = User.find(params[:id])
+      render status: 200, json: user
+    rescue StandardError => err
+      feedback = {
+        message: 'An error has occurred.',
+        error: "#{err.class}: #{err}"
+      }
+      render status: 404, json: feedback
+    end
+  end
 end

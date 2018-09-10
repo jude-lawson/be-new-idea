@@ -12,8 +12,6 @@ require 'rspec/rails'
 require 'database_cleaner'
 require 'shoulda-matchers'
 
-DatabaseCleaner.strategy = :truncation
-
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -32,7 +30,7 @@ RSpec.configure do |config|
   end
 
   config.after :each do
-    DatabaseCleaner.clean
+    DatabaseCleaner.clean_with(:truncation, reset_ids: true)
   end
 end
 

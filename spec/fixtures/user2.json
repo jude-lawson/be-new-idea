@@ -1,0 +1,27 @@
+{
+  "id": 2,
+  "uid": "def234",
+  "email": "notarealemail@na.moc",
+  "username": "anotheruser",
+  "ideas": [
+    {
+      "id": 2,
+      "title": "Idea 2",
+      "body": "This is the second idea"
+    }
+  ],
+  "contributions": [
+    {
+      "id": 2,
+      "body": "This is the second contribution for Idea 1",
+      "idea_id": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 2,
+      "body": "This is the second comment for contribution 1",
+      "contribution_id": 1
+    }
+  ]
+}

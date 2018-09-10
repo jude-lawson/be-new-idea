@@ -1,0 +1,32 @@
+{
+  "id": 1,
+  "uid": "abc123",
+  "email": "nottrulyanemail@na.moc",
+  "username": "defaultuser",
+  "ideas": [
+    {
+      "id": 1,
+      "title": "Idea 1",
+      "body": "This is the first idea"
+    }
+  ],
+  "contributions": [
+    {
+      "id": 1,
+      "body": "This is the first contribution for Idea 1",
+      "idea_id": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "This is a comment for contribution 1",
+      "contribution_id": 1
+    },
+    {
+      "id": 3,
+      "body": "This is a third comment for contribution 1",
+      "contribution_id": 1
+    }
+  ]
+}

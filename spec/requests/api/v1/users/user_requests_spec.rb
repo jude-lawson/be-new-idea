@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'User Requests' do
   context 'POST /api/v1/users' do
     it 'should create a user and return a 204 if successful' do
-      body = { uid: 'aabbcc123456', email: 'notanemail@na.moc', username: 'notauser' }.to_json
+      body = { id: 3, uid: 'aabbcc123456', email: 'notanemail@na.moc', username: 'notauser' }.to_json
 
       post '/api/v1/users', params: body
 
@@ -21,6 +21,14 @@ RSpec.describe 'User Requests' do
       expect(response.status).to eq(400)
       expect(response_data['message']).to eq('An error has occurred. User creation was unsuccessful.')
       expect(response_data['error']).to include('Validation failed: Uid can\'t be blank')
+    end
+  end
+
+  context 'GET /api/v1/user/:id' do
+    it 'should return all of the user\'s data as well as their ideas, comments, and contributions' do
+      get "/api/v1/users/#{@user1.id}"
+
+      expect(response.body).to eq(@user1_raw)
     end
   end
 end

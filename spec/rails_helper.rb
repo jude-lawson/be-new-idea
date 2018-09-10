@@ -12,8 +12,6 @@ require 'rspec/rails'
 require 'database_cleaner'
 require 'shoulda-matchers'
 
-DatabaseCleaner.strategy = :truncation
-
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -28,27 +26,11 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.before :each do
-    ActiveRecord::Base.connection.execute('DELETE FROM comments')
-    ActiveRecord::Base.connection.execute('DELETE FROM contributions')
-    ActiveRecord::Base.connection.execute('DELETE FROM ideas')
-    ActiveRecord::Base.connection.execute('DELETE FROM users')
-
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE users_id_seq RESTART WITH 1')
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE ideas_id_seq RESTART WITH 1')
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE contributions_id_seq RESTART WITH 1')
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE comments_id_seq RESTART WITH 1')
+    DatabaseCleaner.start
   end
 
   config.after :each do
-    ActiveRecord::Base.connection.execute('DELETE FROM comments')
-    ActiveRecord::Base.connection.execute('DELETE FROM contributions')
-    ActiveRecord::Base.connection.execute('DELETE FROM ideas')
-    ActiveRecord::Base.connection.execute('DELETE FROM users')
-
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE users_id_seq RESTART WITH 1')
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE ideas_id_seq RESTART WITH 1')
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE contributions_id_seq RESTART WITH 1')
-    ActiveRecord::Base.connection.execute('ALTER SEQUENCE comments_id_seq RESTART WITH 1')
+    DatabaseCleaner.clean_with(:truncation, reset_ids: true)
   end
 end
 

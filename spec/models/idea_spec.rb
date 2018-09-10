@@ -19,5 +19,6 @@ RSpec.describe Idea do
   end
   describe 'Relationships' do
     it { should belong_to(:user) }
+    it { should have_many(:contributions) }
   end
 end

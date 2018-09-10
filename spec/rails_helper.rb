@@ -9,7 +9,6 @@ require 'rspec/rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
-require 'database_cleaner'
 require 'shoulda-matchers'
 
 begin
@@ -26,11 +25,27 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.before :each do
-    DatabaseCleaner.start
+    ActiveRecord::Base.connection.execute('DELETE FROM comments')
+    ActiveRecord::Base.connection.execute('DELETE FROM contributions')
+    ActiveRecord::Base.connection.execute('DELETE FROM ideas')
+    ActiveRecord::Base.connection.execute('DELETE FROM users')
+
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE users_id_seq RESTART WITH 1')
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE ideas_id_seq RESTART WITH 1')
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE contributions_id_seq RESTART WITH 1')
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE comments_id_seq RESTART WITH 1')
   end
 
   config.after :each do
-    DatabaseCleaner.clean_with(:truncation, reset_ids: true)
+    ActiveRecord::Base.connection.execute('DELETE FROM comments')
+    ActiveRecord::Base.connection.execute('DELETE FROM contributions')
+    ActiveRecord::Base.connection.execute('DELETE FROM ideas')
+    ActiveRecord::Base.connection.execute('DELETE FROM users')
+
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE users_id_seq RESTART WITH 1')
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE ideas_id_seq RESTART WITH 1')
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE contributions_id_seq RESTART WITH 1')
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE comments_id_seq RESTART WITH 1')
   end
 end
 
@@ -41,3 +56,55 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+
+def setup_users_and_posts
+  @user1_raw = File.read('spec/fixtures/user1.json')
+  @user2_raw = File.read('spec/fixtures/user2.json')
+
+  @user1_fixture_data = JSON.parse(@user1_raw)
+  @user2_fixture_data = JSON.parse(@user2_raw)
+
+  @user1 = User.create!(uid: @user1_fixture_data['uid'],
+                        email: @user1_fixture_data['email'],
+                        username: @user1_fixture_data['username'])
+
+  @user2 = User.create!(uid: @user2_fixture_data['uid'],
+                        email: @user2_fixture_data['email'],
+                        username: @user2_fixture_data['username'])
+
+  @user1_ideas = @user1_fixture_data['ideas'].map do |idea|
+    idea[:user] = @user1
+    idea.delete('id')
+    Idea.create!(idea)
+  end
+
+  @user2_ideas = @user2_fixture_data['ideas'].map do |idea|
+    idea[:user] = @user2
+    idea.delete('id')
+    Idea.create!(idea)
+  end
+
+  @user1_fixture_data['contributions'].each do |contribution|
+    contribution[:user] = @user1
+    contribution.delete('id')
+    Contribution.create!(contribution)
+  end
+
+  @user2_fixture_data['contributions'].each do |contribution|
+    contribution[:user] = @user2
+    contribution.delete('id')
+    Contribution.create!(contribution)
+  end
+
+  @user1_fixture_data['comments'].each do |comment|
+    comment[:user] = @user1
+    comment.delete('id')
+    Comment.create!(comment)
+  end
+
+  @user2_fixture_data['comments'].each do |comment|
+    comment[:user] = @user2
+    comment.delete('id')
+    Comment.create!(comment)
+  end
+end

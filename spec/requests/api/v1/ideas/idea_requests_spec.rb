@@ -3,11 +3,11 @@
 #   title: string,
 #   body: text,
 #   author: {username:string,
-#            email:string,  
+#            email:string,
 #            uid:string}
-#   contributions:[ {body:text, 
+#   contributions:[ {body:text,
 #                    author: { username:string,
-#                              email:string,  
+#                              email:string,
 #                              uid:string}
 #                    comments:[
 #                               {body: text, author: { username:string,email:string,uid:string}}
@@ -15,9 +15,9 @@
 #                               {body: text, author: { username:string,email:string,uid:string}}
 #                               ]
 #                             },
-#                   {body:text, 
+#                   {body:text,
 #                    author: { username:string,
-#                              email:string,  
+#                              email:string,
 #                              uid:string}
 #                    comments:[
 #                               {body: text, author: { username:string,email:string,uid:string}}
@@ -34,25 +34,26 @@ RSpec.describe 'Idea Requests' do
   describe 'get ideas' do
     describe 'without parameters' do
 
-      username = 'my_username'
-      uid = "abc123"
-      email = "email@place.com"
-      profile_pic_url = "www.image.com"
-      user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+      it 'should return the 10 newest ideas' do
 
-      10.times do
+        username = 'my_username'
+        uid = "abc123"
+        email = "email@place.com"
+        profile_pic_url = "www.image.com"
+        user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+
         new_title =  "My big new idea"
         new_body = "Many smart things go here"
-        Idea.create!(title: new_title, body: new_body, user:user, created_at: Time.now)
-      end
+        10.times do
+          Idea.create!(title: new_title, body: new_body, user:user, created_at: Time.now)
+        end
 
-      5.times do
-        Idea.create!(title: "My Old Crazy idea", body:"Many Older things go here", user:user, created_at: 1.day.ago)
-      end
+        5.times do
+          Idea.create!(title: "My Old Crazy idea", body:"Many Older things go here", user:user, created_at: 1.day.ago)
+        end
 
-      it 'should return the 10 newest ideas' do
         get '/api/v1/ideas'
-        ideas = Json.parse(response.body)
+        ideas = JSON.parse(response.body)
         expect(ideas.length).to eq(10)
         first_idea = ideas.first
         expect(first_idea["title"]).to eq(new_title)
@@ -71,30 +72,48 @@ RSpec.describe 'Idea Requests' do
 
       describe '?limit=X' do
         it 'should return the number specified in the limit' do
+          Idea.delete_all
+          username = 'my_username'
+          uid = "abc123"
+          email = "email@place.com"
+          profile_pic_url = "www.image.com"
+          user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+
+          new_title =  "My big new idea"
+          new_body = "Many smart things go here"
+          10.times do
+            Idea.create!(title: new_title, body: new_body, user:user, created_at: Time.now)
+          end
+
+          5.times do
+            Idea.create!(title: "My Old Crazy idea", body:"Many Older things go here", user:user, created_at: 1.day.ago)
+          end
+
           get '/api/v1/ideas?limit=15'
-          ideas = Json.parse(response.body)
+          ideas = JSON.parse(response.body)
           expect(ideas.length).to eq(15)
           first_idea = ideas.first
           expect(first_idea["title"]).to eq(new_title)
           expect(first_idea["body"]).to eq(new_body)
         end
       end
-      
-      describe '?offset=X' do
-        username = 'my_username'
-        uid = "abc123"
-        email = "email@place.com"
-        profile_pic_url = "www.image.com"
-        user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
-    
-        20.times do |n|
-          title =  "#{n+1}"
-          body = "Many smart things go here"
-          Idea.create!(title: title, body: body, user:user, created_at: ((n+1)/2).hours.ago)
-        end
 
+      describe '?offset=X' do
+        
         it 'should offset the results, according to the filter(default newest)' do
-          get '/api/v1/ideas?offset=10' 
+          Idea.delete_all
+          username = 'my_username'
+          uid = "abc123"
+          email = "email@place.com"
+          profile_pic_url = "www.image.com"
+          user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+  
+          20.times do |n|
+            title =  "#{n+1}"
+            body = "Many smart things go here"
+            Idea.create!(title: title, body: body, user:user, created_at: ((n+1)/2).hours.ago)
+          end
+          get '/api/v1/ideas?offset=10'
           ideas = JSON.parse(response.body)
           expect(ideas.count).to eq(10)
           expect(ideas.first['title']).to eq("10")
@@ -102,7 +121,7 @@ RSpec.describe 'Idea Requests' do
         end
 
       end
-      
+
     end
   end
 end

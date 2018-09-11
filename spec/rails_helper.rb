@@ -96,13 +96,13 @@ def setup_users_and_posts
     Contribution.create!(contribution)
   end
 
-  @user1_fixture_data['comments'].each do |comment|
+  @user1_comments = @user1_fixture_data['comments'].map do |comment|
     comment[:user] = @user1
     comment.delete('id')
     Comment.create!(comment)
   end
 
-  @user2_fixture_data['comments'].each do |comment|
+  @user2_comments = @user2_fixture_data['comments'].map do |comment|
     comment[:user] = @user2
     comment.delete('id')
     Comment.create!(comment)

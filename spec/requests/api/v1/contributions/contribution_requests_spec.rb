@@ -44,15 +44,15 @@ RSpec.describe 'Contribution Requests' do
     end
 
     it 'should return a 400 with an error message if unsucessful' do
-      errant_contribution = { body: 123 }
+      new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
 
-      patch "/api/v1/contributions/#{@user1_contributions[0].id}", params: errant_contribution.to_json
+      patch "/api/v1/contributions/999", params: new_contribution_body.to_json
 
       feedback = JSON.parse(response.body)
 
       expect(response.status).to eq(400)
       expect(feedback['message']).to eq('An error has occurred')
-      expect(feedback['error']).to include('ActiveRecord::RecordInvalid')
+      expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
     end
   end
 end

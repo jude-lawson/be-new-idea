@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
       # Contributions
       post '/ideas/:id/contributions', to: 'contributions#create'
+      patch '/contributions/:id', to: 'contributions#edit'
     end
   end
 end

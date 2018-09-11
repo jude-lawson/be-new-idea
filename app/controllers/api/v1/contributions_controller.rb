@@ -1,6 +1,5 @@
 class Api::V1::ContributionsController < ApplicationController
   def create
-    # require 'pry';binding.pry
     body = JSON.parse(request.body.string)
 
     begin
@@ -10,6 +9,22 @@ class Api::V1::ContributionsController < ApplicationController
     rescue StandardError => err
       feedback = {
         message: 'An error has occurred.',
+        error: "#{err.class}: #{err}"
+      }
+
+      render status: 400, json: feedback
+    end
+  end
+
+  def edit
+    body = JSON.parse(request.body.string)
+
+    begin
+      Contribution.find(params[:id]).update(body)
+      render status: 201
+    rescue StandardError => err
+      feedback = {
+        message: 'An error has occurred',
         error: "#{err.class}: #{err}"
       }
 

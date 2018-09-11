@@ -84,13 +84,13 @@ def setup_users_and_posts
     Idea.create!(idea)
   end
 
-  @user1_fixture_data['contributions'].each do |contribution|
+  @user1_contributions = @user1_fixture_data['contributions'].map do |contribution|
     contribution[:user] = @user1
     contribution.delete('id')
     Contribution.create!(contribution)
   end
 
-  @user2_fixture_data['contributions'].each do |contribution|
+  @user2_contributions = @user2_fixture_data['contributions'].map do |contribution|
     contribution[:user] = @user2
     contribution.delete('id')
     Contribution.create!(contribution)

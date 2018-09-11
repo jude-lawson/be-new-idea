@@ -32,4 +32,27 @@ RSpec.describe 'Contribution Requests' do
       expect(parsed_response['error']).to include('Validation failed')
     end
   end
+
+  describe 'PATCH /api/v1/contributions/:id' do
+    it 'should edit a contribution and return a 201 if successful' do
+      new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
+
+      patch "/api/v1/contributions/#{@user1_contributions[0].id}", params: new_contribution_body.to_json
+
+      expect(response.status).to eq(201)
+      expect(Contribution.find(1).body).to eq(new_contribution_body[:body])
+    end
+
+    it 'should return a 400 with an error message if unsucessful' do
+      new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
+
+      patch "/api/v1/contributions/999", params: new_contribution_body.to_json
+
+      feedback = JSON.parse(response.body)
+
+      expect(response.status).to eq(400)
+      expect(feedback['message']).to eq('An error has occurred')
+      expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
+    end
+  end
 end

@@ -4,7 +4,7 @@ class Api::V1::IdeasController < ApplicationController
     begin
       idea = Idea.find_by(id:params['id']) 
       if idea
-        render json: idea, status: 200
+        render json: idea, status: 200, serializer: IdeaSerializer
       else
         error = "Idea not found"
         render json: {error:error}, status:404

@@ -1,6 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :uid, :email, :username, :ideas, :contributions, :comments
-
+  attributes :id, :uid, :email, :username, :ideas, :contributions, :comments, :profile_pic_url
   def ideas
     object.ideas
   end

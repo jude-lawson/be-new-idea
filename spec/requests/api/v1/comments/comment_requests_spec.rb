@@ -28,9 +28,12 @@ RSpec.describe 'Comment Requests' do
 
   describe 'POST /api/v1/contributions/:id/comments' do
     it 'should create a comment with the associated contribution and return a 201' do
-      new_comment = { body: "This is a kind comment on someone's contribution" }.to_json
+      new_comment = { 
+        user_id: @user2.id,
+        body: "This is a kind comment on someone's contribution"
+      }.to_json
 
-      post "/api/v1/contributions/#{@user1_contributions[0].id}", params: new_comment
+      post "/api/v1/contributions/#{@user1_contributions[0].id}/comments", params: new_comment
 
       expect(response.status).to eq(201)
       expect(Comment.last.id).to eq(4)
@@ -38,15 +41,15 @@ RSpec.describe 'Comment Requests' do
     end
 
     it 'should return a 400 error with error messages if unsuccessful' do
-      errant_comment = {}
+      errant_comment = {}.to_json
 
-      post "/api/v1/contributions/#{@user1_contributions[0].id}", params: errant_comment
+      post "/api/v1/contributions/#{@user1_contributions[0].id}/comments", params: errant_comment
 
       feedback = JSON.parse(response.body)
 
       expect(response.status).to eq(400)
       expect(feedback['message']).to eq('An error has occurred.')
-      expect(feedback['error']).to include('ActvieRecord:RecordInvalid')
+      expect(feedback['error']).to include('ActiveRecord::RecordInvalid')
     end
   end
 end

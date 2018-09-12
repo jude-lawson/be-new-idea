@@ -211,3 +211,20 @@ Contributions can be edited directly, without having to reference the parent Ide
 ```
 
 - Returns a 404 if not found
+
+### Get many Ideas
+
+`GET /api/v1/ideas?filter=...`
+
+```javascript
+[
+   {id: 123, title: "Cool idea 123", body: "This is the content for a cool idea" },
+   {id: 124, title: "Cool idea 124", body: "This is the content for another cool idea!" },
+   {id: 125, title: "Cool idea 125", body: "This is the content for yet another cool idea!!" }
+]
+```
+
+- Returns all ideas based on filter
+- Default filter is most recent activity
+  - Default limit is 50
+  - Limit can be raised as part of filter

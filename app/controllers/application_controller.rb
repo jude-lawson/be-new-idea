@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  def kant(error_params ={})
+  def safe_query(error_params ={})
     status = error_params[:status] || 400
 
     begin 

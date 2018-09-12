@@ -1,6 +1,6 @@
 class Api::V1::IdeasController < ApplicationController
   def show
-    kant do
+    safe_query do
       idea = Idea.find_by(id:params['id']) 
       if idea
         render json: idea, status: 200, serializer: IdeaSerializer

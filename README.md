@@ -228,3 +228,23 @@ Contributions can be edited directly, without having to reference the parent Ide
 - Default filter is most recent activity
   - Default limit is 50
   - Limit can be raised as part of filter
+
+
+### Create a Comment
+
+Comments are created as part of a Contribution.
+
+`POST /api/v1/contributions/:id/comments`
+
+- Accepts the following JSON payload:
+
+```javascript
+{
+  "user_id": 123,
+  "body": "This is the content of this comment."
+}
+```
+
+
+- Returns a 201 is successful.
+- Returns a 400 with standard error messages if unsuccessful.

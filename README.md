@@ -96,7 +96,25 @@ Contributions belong to a specific Idea record. They can be created as part of a
 }
 ```
 
-- `body` abd `user_id` are both required payload parameters.
+- `body` and `user_id` are both required payload parameters.
 - Returns a 201 status code if successful.
 - Returns a 400 error with standard messages if unsuccessful.
+
+
+### Edit Contributions
+
+Contributions can be edited directly, without having to reference the parent Idea.
+
+`PATCH /api/v1/contributions/:id`
+
+- Accepts the following JSON payload:
+
+```javascript
+{
+  "body": "This the edited body for a contribution"
+}
+```
+
+- Rturns a 201 is successful.
+- Rturns 400 with standard error messages if unsuccessful.
 

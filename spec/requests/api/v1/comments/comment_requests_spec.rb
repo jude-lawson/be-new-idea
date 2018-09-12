@@ -21,7 +21,7 @@ RSpec.describe 'Comment Requests' do
 
       feedback = JSON.parse(response.body)
       
-      expect(feedback['message']).to eq('An error has occurred')
+      expect(feedback['message']).to eq('An error has occurred.')
       expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
     end
   end

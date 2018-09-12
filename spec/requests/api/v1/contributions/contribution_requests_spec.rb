@@ -51,7 +51,7 @@ RSpec.describe 'Contribution Requests' do
       feedback = JSON.parse(response.body)
 
       expect(response.status).to eq(400)
-      expect(feedback['message']).to eq('An error has occurred')
+      expect(feedback['message']).to eq('An error has occurred.')
       expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
     end
   end

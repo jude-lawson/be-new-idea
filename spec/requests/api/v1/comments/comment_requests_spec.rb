@@ -20,10 +20,36 @@ RSpec.describe 'Comment Requests' do
       patch '/api/v1/comments/999', params: edited_comment.to_json
 
       feedback = JSON.parse(response.body)
-
-      expect(response.status).to eq(400)
+      
       expect(feedback['message']).to eq('An error has occurred')
       expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
+    end
+  end
+
+  describe 'POST /api/v1/contributions/:id/comments' do
+    it 'should create a comment with the associated contribution and return a 201' do
+      new_comment = { 
+        user_id: @user2.id,
+        body: "This is a kind comment on someone's contribution"
+      }.to_json
+
+      post "/api/v1/contributions/#{@user1_contributions[0].id}/comments", params: new_comment
+
+      expect(response.status).to eq(201)
+      expect(Comment.last.id).to eq(4)
+      expect(Comment.last.body).to eq("This is a kind comment on someone's contribution")
+    end
+
+    it 'should return a 400 error with error messages if unsuccessful' do
+      errant_comment = {}.to_json
+
+      post "/api/v1/contributions/#{@user1_contributions[0].id}/comments", params: errant_comment
+
+      feedback = JSON.parse(response.body)
+
+      expect(response.status).to eq(400)
+      expect(feedback['message']).to eq('An error has occurred.')
+      expect(feedback['error']).to include('ActiveRecord::RecordInvalid')
     end
   end
 end

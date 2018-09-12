@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       patch '/contributions/:id', to: 'contributions#edit'
 
       # Comments
+      post '/contributions/:id/comments', to: 'comments#create'
       patch '/comments/:id', to: 'comments#edit'
     end
   end

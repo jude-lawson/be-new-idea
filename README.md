@@ -27,3 +27,52 @@ This API is the backend for the New Idea application for sharing and creating ne
   "error": "SomeError::ClassThing: This is the error message"
 }
 ```
+
+`GET /api/v1/users/:id`
+
+- Retrieves the user with the specified id
+- Returns an object of user data including:
+  - id (integer)
+  - uid (alphanumeric string)
+  - email (string)
+  - username (string)
+- Returns all of that user's ideas in a collection.
+- Returns all of that user's contributions in a collection.
+- Returns all of that user's comments in a collection.
+
+```javascript
+{
+  "id": 123,
+  "uid": "abc123",
+  "email": "notanemail@na.moc",
+  "username": "notausername",
+  "ideas": [
+    {
+      "id": 1,
+      "title": "Idea 1",
+      "body": "This is the first idea"
+    }
+  ],
+  "contributions": [
+    {
+      "id": 1,
+      "body": "This is the first contribution for Idea 1",
+      "idea_id": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "This is a comment for contribution 1",
+      "contribution_id": 1
+    },
+    {
+      "id": 3,
+      "body": "This is a third comment for contribution 1",
+      "contribution_id": 1
+    }
+  ]
+}
+```
+
+- Returns a 404 with the normal error message structure (see first endpoint) if an error occurs getting the user.

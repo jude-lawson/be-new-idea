@@ -248,3 +248,17 @@ Comments are created as part of a Contribution.
 
 - Returns a 201 is successful.
 - Returns a 400 with standard error messages if unsuccessful.
+
+
+### Edit a Comment
+
+`PATCH /api/v1/comments/:id`
+
+```javascript
+{
+  "body": "This is the comment's updated content"
+}
+```
+
+- Returns a 201 is successful.
+- Returns a 400 with standard error messages if unsuccessful.

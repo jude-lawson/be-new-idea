@@ -81,7 +81,7 @@ This API is the backend for the New Idea application for sharing and creating ne
 
 - Returns a 404 with the normal error message structure (see first endpoint) if an error occurs getting the user.
 
-### Create Contributions
+### Create a Contribution
 
 Contributions belong to a specific Idea record. They can be created as part of a specified idea.
 
@@ -101,7 +101,7 @@ Contributions belong to a specific Idea record. They can be created as part of a
 - Returns a 400 error with standard messages if unsuccessful.
 
 
-### Edit Contributions
+### Edit a Contribution
 
 Contributions can be edited directly, without having to reference the parent Idea.
 
@@ -115,6 +115,99 @@ Contributions can be edited directly, without having to reference the parent Ide
 }
 ```
 
-- Rturns a 201 is successful.
-- Rturns 400 with standard error messages if unsuccessful.
+- Returns a 201 is successful.
+- Returns 400 with standard error messages if unsuccessful.
 
+
+### Retrieve an Idea
+
+`GET /api/v1/ideas/:id`
+
+- Returns the Idea's content along with:
+  - The Author's information
+  - The associsted Contributions and their Authors' information
+  - Those Contributions' Comments
+
+```javascript
+ {
+    "title": "Cool Idea",
+    "body": "This is the content of the cool idea.",
+    "author": {
+      "username": "coolauthor",
+      "email": "coolemail@na.moc",  
+      "uid": "abc123"
+    },
+    "contributions":[
+      {
+        "body": "This is the body of the first contribution", 
+        "author": { 
+          "username": "anotheruser",
+          "email": "anotheruser@na.moc",  
+          "uid": "def234"
+        },
+        "comments":[
+          {
+            "body": "But what about this?",
+            "author": {
+              "username": "coolauthor",
+              "email": "coolemail@na.moc",
+              "uid": "abc123"
+            }
+          },
+          {
+            "body": "But what about this other thing?",
+            "author": {
+              "username": "anotheruser",
+              "email": "anotheruser@na.moc",
+              "uid": "def234"
+            }
+          },
+          {
+            "body": "Okay, that makes sense",
+            "author": {
+              "username": "coolauthor",
+              "email": "coolemail@na.moc",
+              "uid": "abc123"
+            }
+          }
+        ]
+      },
+      {
+        "body": "Hey, here's another thought.", 
+        "author": {
+          "username": "someone_else",
+          "email": "someone_else@na.moc",  
+          "uid": "xyz321"
+        },
+        "comments":[
+          {
+            "body": "That's interesting",
+            "author": {
+              "username": "coolauthor",
+              "email": "coolemail@na.moc",
+              "uid": "abc123"
+            }
+          },
+          {
+            "body": "Okay, thanks!",
+            "author": {
+              "username": "someone_else",
+              "email": "someone_else@na.moc",
+              "uid": "xyz321"
+            }
+          }
+          {
+            "body": "You all are the best!",
+            "author": {
+              "username": "anotheruser",
+              "email": "anotheruser@na.moc",
+              "uid": "def234"
+            }
+          }
+        ]
+      }
+    ]
+  }
+```
+
+- Returns a 404 if not found

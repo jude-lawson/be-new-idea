@@ -6,6 +6,8 @@ This API is the backend for the New Idea application for sharing and creating ne
 
 ## Available Endpoints
 
+### Create a User
+
 `POST /api/v1/users`
 
 - Accepts the following JSON shape:
@@ -27,6 +29,8 @@ This API is the backend for the New Idea application for sharing and creating ne
   "error": "SomeError::ClassThing: This is the error message"
 }
 ```
+
+### Retrieve a User
 
 `GET /api/v1/users/:id`
 
@@ -76,3 +80,23 @@ This API is the backend for the New Idea application for sharing and creating ne
 ```
 
 - Returns a 404 with the normal error message structure (see first endpoint) if an error occurs getting the user.
+
+### Create Contributions
+
+Contributions belong to a specific Idea record. They can be created as part of a specified idea.
+
+`POST /api/v1/ideas/:id/contributions`
+
+- Accepts the following JSON payload:
+
+```javascript
+{
+  "user_id": 123,
+  "body": "This is the really cool contribution for a really cool idea."
+}
+```
+
+- `body` abd `user_id` are both required payload parameters.
+- Returns a 201 status code if successful.
+- Returns a 400 error with standard messages if unsuccessful.
+

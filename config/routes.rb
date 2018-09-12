@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       # Contributions
       post '/ideas/:id/contributions', to: 'contributions#create'
       patch '/contributions/:id', to: 'contributions#edit'
+
+      # Comments
+      patch '/comments/:id', to: 'comments#edit'
     end
   end
 end

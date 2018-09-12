@@ -12,7 +12,7 @@ RSpec.describe 'Comment Requests' do
       patch "/api/v1/comments/#{comment_id}", params: edited_comment.to_json
 
       expect(response.status).to eq(201)
-      expect(Comment.find(comment_id)).to eq(edited_comment[:body])
+      expect(Comment.find(comment_id).body).to eq(edited_comment[:body])
     end
 
     it 'should return a 400 with error messages if unsuccessful' do

@@ -21,11 +21,11 @@ RSpec.describe 'Edit Idea Requests' do
       edited_idea_content = { title: 'A new title', body: 'This is some new content for the idea' }
       patch "/api/v1/ideas/999", params: edited_idea_content.to_json
 
-      feedback = JSON>parse(response.body)
+      feedback = JSON.parse(response.body)
 
       expect(response.status).to eq(400)
-      expect(response['message']).to eq('An error has occurred')
-      expect(response['error']).to include('ActiveRecord::RecordNotFound')
+      expect(feedback['message']).to eq('An error has occurred.')
+      expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
     end
   end
 end

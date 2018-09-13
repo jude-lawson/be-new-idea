@@ -10,6 +10,14 @@ class Api::V1::IdeasController < ApplicationController
       end
     end
   end
+
+  def edit
+    safe_query do
+      idea = Idea.find(params[:id])
+      idea.update(parsed_response)
+      render status: 201
+    end
+  end
   
   def index
     @ideas = Idea.all_with(params.as_json)

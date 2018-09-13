@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       # Ideas
       resources :ideas, only: [:index, :show]
+      patch '/ideas/:id', to: 'ideas#edit'
       
       # Users
       get '/users/:id', to: 'users#show' 

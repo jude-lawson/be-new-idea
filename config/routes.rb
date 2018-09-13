@@ -2,8 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # Ideas
-      patch '/ideas/:id', to: 'ideas#edit'
-      resources :ideas, only: [:index, :show, :create]
+      resources :ideas, only: [:index, :show, :create, :update]
       
       # Users
       get '/users/:id', to: 'users#show' 

@@ -11,14 +11,14 @@ class Api::V1::IdeasController < ApplicationController
     end
   end
 
-  def edit
+  def update
     safe_query do
       idea = Idea.find(params[:id])
       idea.update(parsed_response)
       render status: 201
     end
   end
-  
+
   def create
     safe_query do
       user = User.find(parsed_response["user_id"])

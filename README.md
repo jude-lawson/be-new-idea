@@ -230,6 +230,23 @@ Contributions can be edited directly, without having to reference the parent Ide
   - Limit can be raised as part of filter
 
 
+### Edit and Idea
+
+`PATCH /api/v1/ideas/:id`
+
+- Accepts the following JSON payload:
+
+```javascript
+{
+  title: string
+  body: string
+}
+```
+
+- Returns a 201 if successful.
+- Returns a 400 with standard error messages if unsuccssful.
+
+
 ### Create a Comment
 
 Comments are created as part of a Contribution.

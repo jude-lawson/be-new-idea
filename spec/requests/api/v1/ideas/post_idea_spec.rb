@@ -18,12 +18,11 @@ RSpec.describe 'Idea Creation' do
       }
 
       post '/api/v1/ideas', params: new_idea_params
-      
       returned_resp = JSON.parse(response.body)
       idea_in_db = Idea.find_by_title(title)
-      expect(idea_in_db).to exist
+      expect(idea_in_db).to_not be_nil
       expect(idea_in_db.body).to eq(body)
-      expect(respone.status).to eq(201)
+      expect(response.status).to eq(201)
       expect(returned_resp['message']).to eq('Idea successfully created')
     end
     it 'should not create the idea with missing fields' do
@@ -42,10 +41,8 @@ RSpec.describe 'Idea Creation' do
       post '/api/v1/ideas', params: new_idea_params
       
       returned_resp = JSON.parse(response.body)
-      idea_in_db = Idea.find_by_title(title)
-      expect(idea_in_db).to_not exist
-      expect(respone.status).to eq(400)
-      expect(returned_resp['message']).to eq('An error has occurred')
+      expect(response.status).to eq(400)
+      expect(returned_resp['message']).to eq('An error has occurred.')
     end
   end
 end

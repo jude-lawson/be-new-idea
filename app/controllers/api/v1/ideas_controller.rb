@@ -19,8 +19,22 @@ class Api::V1::IdeasController < ApplicationController
     end
   end
   
+  def create
+    safe_query do
+      user = User.find(params[:user_id])
+      user.ideas.create!(idea_params)
+      render json: {message:"Idea successfully created"}, status:201
+    end
+  end
+  
   def index
     @ideas = Idea.all_with(params.as_json)
     render json: @ideas, status: 200, each_serializer: MultipleIdeasSerializer
+  end
+
+  private
+
+  def idea_params
+    params.permit(:title, :body)
   end
 end

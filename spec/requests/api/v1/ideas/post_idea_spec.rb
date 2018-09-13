@@ -15,10 +15,11 @@ RSpec.describe 'Idea Creation' do
         user_id: user.id,
         title: title,
         body: body
-      }
+      }.to_json
 
       post '/api/v1/ideas', params: new_idea_params
       returned_resp = JSON.parse(response.body)
+      
       idea_in_db = Idea.find_by_title(title)
       expect(idea_in_db).to_not be_nil
       expect(idea_in_db.body).to eq(body)
@@ -36,7 +37,7 @@ RSpec.describe 'Idea Creation' do
       new_idea_params = {
         user_id: user.id,
         body: body
-      }
+      }.to_json
 
       post '/api/v1/ideas', params: new_idea_params
       

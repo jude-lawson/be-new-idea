@@ -7,11 +7,18 @@ RSpec.describe 'User Requests' do
   
   describe 'POST /api/v1/users' do
     it 'should create a user and return a 204 if successful' do
-      body = { uid: 'aabbcc123456', email: 'notanemail@na.moc', username: 'notauser' }.to_json
+      uid = 'aabbcc123456'
+      email = 'notanemail@na.moc'
+      username = 'notauser'
+      body = { uid: uid, email: email, username: username }.to_json
 
       post '/api/v1/users', params: body
 
-      expect(response.status).to eq(204)
+      ret_user = JSON.parse(response.body)
+      expect(response.status).to eq(201)
+      expect(ret_user['uid']).to eq(uid)
+      expect(ret_user['email']).to eq(email)
+      expect(ret_user['username']).to eq(username)
     end
 
     it 'should return a 400 if something went wrong' do

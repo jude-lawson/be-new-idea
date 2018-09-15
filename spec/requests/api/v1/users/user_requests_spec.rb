@@ -6,7 +6,7 @@ RSpec.describe 'User Requests' do
   end
   
   describe 'POST /api/v1/users' do
-    it 'should create a user and return a 204 if successful' do
+    it 'should create a user and return a 201 if successful' do
       uid = 'aabbcc123456'
       email = 'notanemail@na.moc'
       username = 'notauser'
@@ -16,6 +16,22 @@ RSpec.describe 'User Requests' do
 
       ret_user = JSON.parse(response.body)
       expect(response.status).to eq(201)
+      expect(ret_user['uid']).to eq(uid)
+      expect(ret_user['email']).to eq(email)
+      expect(ret_user['username']).to eq(username)
+    end
+
+    it 'should return a 200 if the user already existed successful' do
+      uid = 'aabbcc123456'
+      email = 'notanemail@na.moc'
+      username = 'notauser'
+      body = { uid: uid, email: email, username: username }
+      User.create!(body)
+
+      post '/api/v1/users', params: body.to_json
+
+      ret_user = JSON.parse(response.body)
+      expect(response.status).to eq(200)
       expect(ret_user['uid']).to eq(uid)
       expect(ret_user['email']).to eq(email)
       expect(ret_user['username']).to eq(username)

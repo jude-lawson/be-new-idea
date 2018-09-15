@@ -30,6 +30,20 @@ This API is the backend for the New Idea application for sharing and creating ne
 }
 ```
 
+### Create an Idea
+
+`POST /api/v1/ideas`
+
+accepts the following JSON shape
+
+```javascript
+{
+  user_id: users primary key,
+  title: string,
+  body: text
+      }
+```
+
 ### Retrieve a User
 
 `GET /api/v1/users/:id`

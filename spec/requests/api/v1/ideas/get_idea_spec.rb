@@ -8,7 +8,7 @@ RSpec.describe 'Get Idea request' do
       uid = "abc123"
       email = "email@place.com"
       profile_pic_url = "www.image.com"
-      user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+      user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
       title = "It's uber, but for dogs, but with facebook."
       body = "i don't actually know"
 
@@ -36,7 +36,7 @@ RSpec.describe 'Get Idea request' do
       email = "email@place.com"
       profile_pic_url = "www.image.com"
       
-      user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+      user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
       idea = Idea.create!(title: "It's uber, but for dogs, but with facebook.", body: "i don't actually know", user:user)
       13.times do
         idea.contributions.create!(body: "some 'meaningful' contribution", user:user)
@@ -61,7 +61,7 @@ RSpec.describe 'Get Idea request' do
       email = "email@place.com"
       profile_pic_url = "www.image.com"
       
-      user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+      user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
       idea = Idea.create!(title: "It's uber, but for dogs, but with facebook.", body: "i don't actually know", user:user)
       2.times do
         contr = idea.contributions.create!(body: "some 'meaningful' contribution", user:user)

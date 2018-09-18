@@ -28,7 +28,7 @@ RSpec.describe 'User Requests' do
       email = 'notanemail@na.moc'
       username = 'notauser'
       body = { uid: uid, email: email, username: username }
-      User.create!(body)
+      User.create_with_token(body)
 
       post '/api/v1/users', params: body.to_json
 

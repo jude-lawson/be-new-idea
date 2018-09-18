@@ -1,10 +1,30 @@
-# # This file should contain all the record creation needed to seed the database with its default values.
-# # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-# #
-# # Examples:
-# #
-# #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-# #   Character.create(name: 'Luke', movie: movies.first)
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
+
+@user1_raw = File.read('spec/fixtures/user1.json')
+  @user2_raw = File.read('spec/fixtures/user2.json')
+
+  @user1_fixture_data = JSON.parse(@user1_raw)
+  @user2_fixture_data = JSON.parse(@user2_raw)
+
+  @user1 = User.create_with_token(uid: @user1_fixture_data['uid'],
+                        email: @user1_fixture_data['email'],
+                        username: @user1_fixture_data['username'])[:user]
+
+  @user2 = User.create_with_token(uid: @user2_fixture_data['uid'],
+                        email: @user2_fixture_data['email'],
+                        username: @user2_fixture_data['username'])[:user]
+
+  @user1_ideas = @user1_fixture_data['ideas'].map do |idea|
+    idea[:user] = @user1
+    idea.delete('id')
+    Idea.create!(idea)
+  end
 
 # @user1_raw = File.read('spec/fixtures/user1.json')
 #   @user2_raw = File.read('spec/fixtures/user2.json')

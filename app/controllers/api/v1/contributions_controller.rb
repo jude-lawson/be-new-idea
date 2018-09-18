@@ -1,15 +1,19 @@
 class Api::V1::ContributionsController < ApplicationController
   def create
-    gateway status: 400 do
+    body = JSON.parse(request.body.string)
+
+    safe_query status: 400 do
       idea = Idea.find(params[:id])
-      idea.contributions.create!(parsed_response)
+      idea.contributions.create!(body)
       render status: 201
     end
   end
 
   def edit
-    gateway status: 400 do
-      Contribution.find(params[:id]).update(parsed_response)
+    body = JSON.parse(request.body.string)
+
+    safe_query status: 400 do
+      Contribution.find(params[:id]).update(body)
       render status: 201
     end
   end

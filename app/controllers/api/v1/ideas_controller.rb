@@ -12,7 +12,7 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def update
-    gateway do
+    safe_query do
       idea = Idea.find(params[:id])
       idea.update(parsed_response)
       render status: 201
@@ -20,7 +20,7 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def create
-    gateway do
+    safe_query do
       user = User.find(parsed_response["user_id"])
       user.ideas.create!(parsed_response)
       render json: {message:"Idea successfully created"}, status:201

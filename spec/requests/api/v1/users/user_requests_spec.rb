@@ -19,6 +19,8 @@ RSpec.describe 'User Requests' do
       expect(ret_user['uid']).to eq(uid)
       expect(ret_user['email']).to eq(email)
       expect(ret_user['username']).to eq(username)
+      expect(response.headers).to include('Authorization')
+      expect(response.headers['Authorization']).to be_a(String)
     end
 
     it 'should return a 200 if the user already existed successful' do

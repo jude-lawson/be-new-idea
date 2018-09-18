@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   validates_presence_of :uid, :email, :username, :access_token
+  serialize :access_token
 
   has_many :ideas
   has_many :contributions
@@ -12,12 +13,11 @@ class User < ApplicationRecord
   end
 
   def self.create_with_token(user_info)
-    token_set = User.generate_access_token
-    user_info[:access_token] = token_set[:secure_digest]
-
-    if user = User.find_by(user_info)
+    if user = User.find_by(uid: user_info['uid'])
       { db_memo: 'found', user: user }
     else
+      token_set = User.generate_access_token
+      user_info[:access_token] = token_set[:secure_digest]
       user = User.create!(user_info)
       { db_memo: 'created', user: user, token: token_set[:token] }
     end

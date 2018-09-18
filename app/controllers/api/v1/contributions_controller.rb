@@ -8,7 +8,7 @@ class Api::V1::ContributionsController < ApplicationController
   end
 
   def edit
-    safe_query status: 400 do
+    gateway status: 400 do
       Contribution.find(params[:id]).update(parsed_response)
       render status: 201
     end

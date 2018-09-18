@@ -81,7 +81,9 @@ RSpec.describe 'Contribution Requests' do
     it 'should edit a contribution and return a 201 if successful' do
       new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
 
-      patch "/api/v1/contributions/#{@user1_contributions[0].id}", params: new_contribution_body.to_json
+      auth = JwtService.encode({ uid: @user1.uid, access_token: @user1_creation_data[:token] })
+
+      patch "/api/v1/contributions/#{@user1_contributions[0].id}", params: new_contribution_body.to_json, headers: { 'Authorization' => auth }
 
       expect(response.status).to eq(201)
       expect(Contribution.find(1).body).to eq(new_contribution_body[:body])
@@ -90,13 +92,46 @@ RSpec.describe 'Contribution Requests' do
     it 'should return a 400 with an error message if unsucessful' do
       new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
 
-      patch "/api/v1/contributions/999", params: new_contribution_body.to_json
+      auth = JwtService.encode({ uid: @user1.uid, access_token: @user1_creation_data[:token] })
+
+      patch "/api/v1/contributions/999", params: new_contribution_body.to_json, headers: { 'Authorization' => auth }
 
       feedback = JSON.parse(response.body)
 
       expect(response.status).to eq(400)
       expect(feedback['message']).to eq('An error has occurred.')
       expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
+    end
+
+    it 'should return a 401 if authentication is unsuccessful' do
+      new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
+
+      auth = JwtService.encode({ uid: @user1.uid, access_token: 'not a real token' })
+
+      patch "/api/v1/contributions/#{@user1_contributions[0].id}", params: new_contribution_body.to_json, headers: { 'Authorization' => auth }
+
+      expect(response.status).to eq(401)
+      expect(JSON.parse(response.body)['message']).to eq('Bad Authentication')
+    end
+
+    it 'should return a 401 if the authorization header is malformed' do
+      new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
+
+      auth = 'this is not great'
+
+      patch "/api/v1/contributions/#{@user1_contributions[0].id}", params: new_contribution_body.to_json, headers: { 'Authorization' => auth }
+
+      expect(response.status).to eq(401)
+      expect(JSON.parse(response.body)['message']).to eq('Authorization header was not provided or is mis-structured.')
+    end
+
+    it 'should return a 401 if the authorization header is not included' do
+      new_contribution_body = { body: 'This is the new, edited body for Contribution 1 for Idea 1' }
+
+      patch "/api/v1/contributions/#{@user1_contributions[0].id}", params: new_contribution_body.to_json
+
+      expect(response.status).to eq(401)
+      expect(JSON.parse(response.body)['message']).to eq('Authorization header was not provided or is mis-structured.')
     end
   end
 end

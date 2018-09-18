@@ -52,11 +52,13 @@ RSpec.describe 'Idea Creation' do
       uid = "abc123"  
       email = "email@place.com"
       profile_pic_url = "www.image.com"
+      title = "My big new idea"
       user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
 
       body = "This is the body"
       new_idea_params = {
         user_id: user.id,
+        title: title,
         body: body
       }.to_json
 

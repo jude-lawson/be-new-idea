@@ -12,7 +12,7 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def update
-    safe_query do
+    gateway do
       idea = Idea.find(params[:id])
       idea.update(parsed_response)
       render status: 201

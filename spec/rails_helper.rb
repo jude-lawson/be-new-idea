@@ -64,13 +64,18 @@ def setup_users_and_posts
   @user1_fixture_data = JSON.parse(@user1_raw)
   @user2_fixture_data = JSON.parse(@user2_raw)
 
-  @user1 = User.create_with_token(uid: @user1_fixture_data['uid'],
-                        email: @user1_fixture_data['email'],
-                        username: @user1_fixture_data['username'])[:user]
+  @user1_creation_data = User.create_with_token(uid: @user1_fixture_data['uid'],
+                                                email: @user1_fixture_data['email'],
+                                                username: @user1_fixture_data['username'])
 
-  @user2 = User.create_with_token(uid: @user2_fixture_data['uid'],
-                        email: @user2_fixture_data['email'],
-                        username: @user2_fixture_data['username'])[:user]
+  @user1 = @user1_creation_data[:user]
+
+  @user2_creation_data = User.create_with_token(uid: @user2_fixture_data['uid'],
+                                                email: @user2_fixture_data['email'],
+                                                username: @user2_fixture_data['username'])
+
+  @user2 = @user2_creation_data[:user]
+                                                
 
   @user1_ideas = @user1_fixture_data['ideas'].map do |idea|
     idea[:user] = @user1

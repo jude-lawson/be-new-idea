@@ -9,8 +9,10 @@ RSpec.describe 'Edit Idea Requests' do
     it 'should edit the idea and return a 201 if successful' do
       edited_idea_content = { title: 'A new title', body: 'This is some new content for the idea' }
       edited_idea_id = @user1_ideas[0].id
+
+      auth = JwtService.encode({ uid: @user1.uid, access_token: @user1_creation_data[:token] })
   
-      patch "/api/v1/ideas/#{edited_idea_id}", params: edited_idea_content.to_json
+      patch "/api/v1/ideas/#{edited_idea_id}", params: edited_idea_content.to_json, headers: { 'Authorization' => auth }
 
       expect(response.status).to eq(201)
       expect(Idea.find(@user1_ideas[0].id).body).to eq(edited_idea_content[:body])
@@ -19,7 +21,10 @@ RSpec.describe 'Edit Idea Requests' do
   
     it 'should return a 400 error with standard error message if unsuccessful' do
       edited_idea_content = { title: 'A new title', body: 'This is some new content for the idea' }
-      patch "/api/v1/ideas/999", params: edited_idea_content.to_json
+
+      auth = JwtService.encode({ uid: @user1.uid, access_token: @user1_creation_data[:token] })
+
+      patch "/api/v1/ideas/999", params: edited_idea_content.to_json, headers: { 'Authorization' => auth }
 
       feedback = JSON.parse(response.body)
 

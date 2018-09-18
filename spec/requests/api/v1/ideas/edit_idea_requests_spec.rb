@@ -32,5 +32,39 @@ RSpec.describe 'Edit Idea Requests' do
       expect(feedback['message']).to eq('An error has occurred.')
       expect(feedback['error']).to include('ActiveRecord::RecordNotFound')
     end
+
+    it 'should return a 401 if a bad authentication is given' do
+      edited_idea_content = { title: 'A new title', body: 'This is some new content for the idea' }
+      edited_idea_id = @user1_ideas[0].id
+
+      auth = JwtService.encode({ uid: @user1.uid, access_token: 'not a real token' })
+  
+      patch "/api/v1/ideas/#{edited_idea_id}", params: edited_idea_content.to_json, headers: { 'Authorization' => auth }
+
+      expect(response.status).to eq(401)
+      expect(JSON.parse(response.body)['message']).to eq('Bad Authentication')
+    end
+
+    it 'should return a 401 if authorization header is malformed' do
+      edited_idea_content = { title: 'A new title', body: 'This is some new content for the idea' }
+      edited_idea_id = @user1_ideas[0].id
+
+      auth = "This is not great"
+  
+      patch "/api/v1/ideas/#{edited_idea_id}", params: edited_idea_content.to_json, headers: { 'Authorization' => auth }
+
+      expect(response.status).to eq(401)
+      expect(JSON.parse(response.body)['message']).to eq('Authorization header was not provided or is mis-structured.')
+    end
+
+    it 'should return a 401 if authorization header is not provided' do
+      edited_idea_content = { title: 'A new title', body: 'This is some new content for the idea' }
+      edited_idea_id = @user1_ideas[0].id
+  
+      patch "/api/v1/ideas/#{edited_idea_id}", params: edited_idea_content.to_json
+
+      expect(response.status).to eq(401)
+      expect(JSON.parse(response.body)['message']).to eq('Authorization header was not provided or is mis-structured.')
+    end
   end
 end

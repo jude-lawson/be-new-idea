@@ -15,6 +15,9 @@ Rails.application.routes.draw do
       # Comments
       post '/contributions/:id/comments', to: 'comments#create'
       patch '/comments/:id', to: 'comments#edit'
+
+      #bs
+      get '/coffee', to: 'coffee#brew'
     end
   end
 end

@@ -88,6 +88,7 @@ def title
   when 1
     Faker::Company.catch_phrase
   when 2
+    Faker::MichaelScott.quote
   end
 end
 

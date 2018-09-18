@@ -57,16 +57,16 @@
 #   end
 
 def create_comment(contribution)
-  contribution.comments.create!(user: rand_user, body: body(15))
+  contribution.comments.create!(user: rand_user, body: body(10))
 
 end
 
 def create_contribution(idea)
-  idea.contributions.create!(user: rand_user, body: body(15) )
+  idea.contributions.create!(user: rand_user, body: body(10) )
 end
 
 def create_idea(user)
-  user.ideas.create!(body: body(15), title: Faker::Hacker.say_something_smart)
+  user.ideas.create!(body: body(10), title: Faker::Hacker.say_something_smart)
 end
 
 def create_user
@@ -103,15 +103,15 @@ def name
   end
 end
 
-x = (20 + rand(15))
+x = (5 + rand(3))
 x.times do |n|
   user = create_user
   puts "#{n} of #{x}"
-  (5 + rand(10)).times do
+  (5 + rand(3)).times do
     idea = create_idea(user)
-    (5 + rand(10)).times do
+    (5 + rand(3)).times do
       contribution = create_contribution(idea)
-      (5 + rand(10)).times do
+      (5 + rand(3)).times do
         comment = create_comment(contribution)
       end
     end

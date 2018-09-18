@@ -17,25 +17,20 @@ class ApplicationController < ActionController::API
     JSON.parse(request.body.string)
   end
 
-  def decode_auth
-    begin
-      JwtService.decode(request.headers['Authorization'])[0]
-    rescue StandardError => err
-      render status: 
-    end
-  end
-
   def gateway
-    # provided_auth = JwtService.decode(request.headers['Authorization'])[0]
-    provided_token = provided_auth['access_token']
-    user_access_token = User.find_by(uid: provided_auth['uid']).access_token
+    begin
+      provided_auth = JwtService.decode(request.headers['Authorization'])[0]
+      user_access_token = User.find_by(uid: provided_auth['uid']).access_token
 
-    if user_access_token == provided_token
-      safe_query do
-        yield
+      if user_access_token == provided_auth['access_token']
+        safe_query do
+          yield
+        end
+      else
+        render status: 401, json: { message: 'Bad Authentication' }
       end
-    else
-      render status: 403, json: { message: 'Bad Authentication' }
+    rescue JWT::DecodeError
+      render status: 401, json: { message: 'Authorization header was not provided or is mis-structured.'}
     end
   end
 end

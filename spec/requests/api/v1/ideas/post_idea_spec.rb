@@ -26,6 +26,7 @@ RSpec.describe 'Idea Creation' do
       expect(response.status).to eq(201)
       expect(returned_resp['message']).to eq('Idea successfully created')
     end
+
     it 'should not create the idea with missing fields' do
       username = 'my_username'
       uid = "abc123"
@@ -44,6 +45,26 @@ RSpec.describe 'Idea Creation' do
       returned_resp = JSON.parse(response.body)
       expect(response.status).to eq(400)
       expect(returned_resp['message']).to eq('An error has occurred.')
+    end
+
+    it 'should return a 403 if the user is not authenticated' do
+      username = 'my_username'
+      uid = "abc123"  
+      email = "email@place.com"
+      profile_pic_url = "www.image.com"
+      user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
+
+      body = "This is the body"
+      new_idea_params = {
+        user_id: user.id,
+        body: body
+      }.to_json
+
+      errant_auth = JwtService.encode({ uid: uid, access_token: 'not a real token' })
+
+      post '/api/v1/ideas', params: new_idea_params, headers: {'Authorization' => errant_auth }
+
+      expect(response.status).to eq(403)
     end
   end
 end

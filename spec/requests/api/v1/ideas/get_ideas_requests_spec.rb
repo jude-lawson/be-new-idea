@@ -40,7 +40,7 @@ RSpec.describe 'Idea Requests' do
         uid = "abc123"
         email = "email@place.com"
         profile_pic_url = "www.image.com"
-        user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+        user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
 
         new_title =  "My big new idea"
         new_body = "Many smart things go here"
@@ -77,7 +77,7 @@ RSpec.describe 'Idea Requests' do
           uid = "abc123"
           email = "email@place.com"
           profile_pic_url = "www.image.com"
-          user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+          user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
 
           new_title =  "My big new idea"
           new_body = "Many smart things go here"
@@ -106,7 +106,7 @@ RSpec.describe 'Idea Requests' do
           uid = "abc123"
           email = "email@place.com"
           profile_pic_url = "www.image.com"
-          user = User.create!(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)
+          user = User.create_with_token(uid:uid , email:email, username:username, profile_pic_url:profile_pic_url)[:user]
   
           20.times do |n|
             title =  "#{n+1}"

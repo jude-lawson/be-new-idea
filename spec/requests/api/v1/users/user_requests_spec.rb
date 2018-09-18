@@ -14,11 +14,21 @@ RSpec.describe 'User Requests' do
 
       post '/api/v1/users', params: body
 
+      auth_jwt = response.headers['Authorization']
+      user_token = User.last.access_token
+
       ret_user = JSON.parse(response.body)
       expect(response.status).to eq(201)
       expect(ret_user['uid']).to eq(uid)
       expect(ret_user['email']).to eq(email)
       expect(ret_user['username']).to eq(username)
+      expect(response.headers).to include('Authorization')
+      expect(auth_jwt).to be_a(String)
+      expect(user_token).to be_a(BCrypt::Password)
+
+      # This expectation is critical. It verifies that matching works between the frontend interface and our database
+      # The order of items around the == comparison operator is crucial too as the method is overwritten by BCrypt for matching
+      expect(user_token == JwtService.decode(auth_jwt)[0]['access_token']).to eq(true)
     end
 
     it 'should return a 200 if the user already existed successful' do
@@ -26,7 +36,7 @@ RSpec.describe 'User Requests' do
       email = 'notanemail@na.moc'
       username = 'notauser'
       body = { uid: uid, email: email, username: username }
-      User.create!(body)
+      User.create_with_token(body)
 
       post '/api/v1/users', params: body.to_json
 

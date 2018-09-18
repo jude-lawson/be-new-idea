@@ -17,13 +17,13 @@ class ApplicationController < ActionController::API
     JSON.parse(request.body.string)
   end
 
-  def gateway
+  def gateway(optional_params = {})
     begin
       provided_auth = JwtService.decode(request.headers['Authorization'])[0]
       user_access_token = User.find_by(uid: provided_auth['uid']).access_token
 
       if user_access_token == provided_auth['access_token']
-        safe_query do
+        safe_query optional_params do
           yield
         end
       else

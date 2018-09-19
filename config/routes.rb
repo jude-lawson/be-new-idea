@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       patch '/comments/:id', to: 'comments#edit'
 
       #bs
-      get '/coffee', to: 'coffee#brew'
+      post '/coffee', to: 'coffee#brew'
     end
   end
 end

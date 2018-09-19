@@ -28,7 +28,13 @@ RSpec.describe 'Get Idea request' do
       expect(returned_user['uid']).to eq(uid)
     end
   end
+  describe 'sad path' do
+    it 'should return a 404' do
+      get "/api/v1/ideas/1"
+      expect(response.status).to eq(404)
 
+    end
+  end
   describe 'contributions' do
     it 'should return all related contributions' do
       username = 'my_username'

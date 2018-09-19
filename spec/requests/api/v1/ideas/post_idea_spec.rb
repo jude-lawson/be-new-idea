@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Idea Creation' do
   describe 'post api/v1/ideas' do
-    it 'should create a new idea with viable params' do
+    it 'should create a new idea with viable params and return the idea info in json' do
       username = 'my_username'
       uid = "abc123"
       email = "email@place.com"
@@ -24,7 +24,12 @@ RSpec.describe 'Idea Creation' do
       expect(idea_in_db).to_not be_nil
       expect(idea_in_db.body).to eq(body)
       expect(response.status).to eq(201)
-      expect(returned_resp['message']).to eq('Idea successfully created')
+      expect(returned_resp['title']).to eq(title)
+      expect(returned_resp['body']).to eq(body)
+      expect(returned_resp['author']['id']).to eq(user.id)
+      expect(returned_resp['author']['email']).to eq(user.email)
+      expect(returned_resp['author']['username']).to eq(user.username)
+      expect(returned_resp['id']).to eq(idea_in_db.id)
     end
     it 'should not create the idea with missing fields' do
       username = 'my_username'

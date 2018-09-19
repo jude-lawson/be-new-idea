@@ -22,8 +22,8 @@ class Api::V1::IdeasController < ApplicationController
   def create
     safe_query do
       user = User.find(parsed_response["user_id"])
-      user.ideas.create!(parsed_response)
-      render json: {message:"Idea successfully created"}, status:201
+      idea = user.ideas.create!(parsed_response)
+      render json: idea, status:201
     end
   end
   

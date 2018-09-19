@@ -26,7 +26,9 @@ RSpec.describe 'Idea Creation' do
       expect(response.status).to eq(201)
       expect(returned_resp['title']).to eq(title)
       expect(returned_resp['body']).to eq(body)
-      expect(returned_resp['user_id']).to eq(user.id)
+      expect(returned_resp['author']['id']).to eq(user.id)
+      expect(returned_resp['author']['email']).to eq(user.email)
+      expect(returned_resp['author']['username']).to eq(user.username)
       expect(returned_resp['id']).to eq(idea_in_db.id)
     end
     it 'should not create the idea with missing fields' do

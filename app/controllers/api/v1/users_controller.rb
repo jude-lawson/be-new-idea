@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   def create
-    safe_query message:" User creation was unsuccessful." do
+    safe_query message:" User creation was unsuccessful." do 
       if user = User.find_by(parsed_response)
         render json: user, status: 200
       else

@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
       feedback = error_params[:feedback] || {
         message: "An error has occurred.#{error_params[:message]}",
         error: "#{err.class}: #{err}"
-      }
+      } 
       render status: status, json: feedback
     end
   end
